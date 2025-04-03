@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.hardware.display.DisplayManager
 import android.hardware.display.VirtualDisplay
+import android.media.CamcorderProfile
 import android.media.MediaRecorder
 import android.media.projection.MediaProjection
 import android.media.projection.MediaProjectionManager
@@ -244,9 +245,10 @@ class FlutterScreenRecordingPlugin :
                 mMediaRecorder?.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
             }
             mMediaRecorder?.setOutputFile(mFileName)
-            mMediaRecorder?.setVideoSize(mDisplayWidth, mDisplayHeight)
+            val profile = CamcorderProfile.get(CamcorderProfile.QUALITY_480P)
+            mMediaRecorder?.setVideoSize(profile.videoFrameWidth, profile.videoFrameHeight)
             mMediaRecorder?.setVideoEncoder(MediaRecorder.VideoEncoder.H264)
-            mMediaRecorder?.setVideoEncodingBitRate(5 * mDisplayWidth * mDisplayHeight)
+            mMediaRecorder?.setVideoEncodingBitRate(1000000)
             mMediaRecorder?.setVideoFrameRate(30)
 
             mMediaRecorder?.prepare()
@@ -257,6 +259,7 @@ class FlutterScreenRecordingPlugin :
             println("Error startRecordScreen")
             println(e.message)
         }
+        println("Recording Started")
 
     }
 
